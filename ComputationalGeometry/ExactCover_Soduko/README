@@ -1,0 +1,1 @@
+THis directory contains two packages. The first solves the exact cover problem in the way elucidated by Donald Knuth (yes, the inventor of TeX). The second uses the exact cover algorithm to automatically solve SODUKO puzzles. The directory also includes a bunch of compact data files for puzzles, and the usual test packages to demonstrate functionality and usage. Have fun.
