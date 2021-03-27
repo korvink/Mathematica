@@ -1,0 +1,605 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     23769,        597]
+NotebookOptionsPosition[     22343,        563]
+NotebookOutlinePosition[     22792,        580]
+CellTagsIndexPosition[     22749,        577]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"BeginPackage", "[", "\"\<BiotSavart`\>\"", "]"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bsUnitVectorPotential", "::", "usage"}], " ", "=", "     ", 
+    "\"\<bsSegmentVectorPotential[{start,end},point] returns an expression \
+for the vector potential of the wire segment with 3D start and end \
+coordinates at a given 3D point. Any of the three coordinates can be provided \
+as symbols or numbers. Unit current in the wire segment is assumed.\n\n\
+bsSegmentVectorPotential[{pt1, pt2, ...},point] adds up the vector fields of \
+the segments of a line specified as a list of 3D points.\n\n\
+bsSegmentVectorPotential[{line1, line2, ...},point] adds up the vector fields \
+of the segments of numerous lines, each specified as a list of 3D points.\n\>\
+\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bsUnitMagneticInduction", "::", "usage"}], "=", 
+    "\"\<bs_SegmentMagneticInduction[{start,end},point] returns an expression \
+for the magnetic induction field of the wire segment with 3D start and end \
+coordinates at a given 3D point. Any of the three coordinates can be provided \
+as symbols or numbers. Unit current in the wire segment is assumed.\n\n\
+bsUnitMagneticInduction[{pt1, pt2, ...},point] adds up the magnetic induction \
+fields of the segments of a line specified as a list of 3D points.\n\n\
+bsUnitMagneticInduction[{line1, line2, ...},point] adds up the magnetic \
+induction fields of the segments of numerous lines, each specified as a list \
+of 3D points.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bsAbsMagneticInduction", "::", "usage"}], "=", 
+    "\"\<bsAbsMagneticInduction[{start,end},point] returns an expression for \
+the magnitude of the magnetc induction field of the wire segment with 3D \
+start and end coordinates at a given 3D point. Any of the three coordinates \
+can be provided as symbols or numbers. Unit current in the wire segment is \
+assumed.\n\nbsAbsMagneticInduction[{pt1, pt2, ...},point] adds up the \
+magnetic induction fields of the segments of a line specified as a list of 3D \
+points.\n\nbsAbsMagneticInduction[{line1, line2, ...},point] adds up the \
+magnetic induction fields of the segments of numerous lines, each specified \
+as a list of 3D points.\>\""}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bsDipoleVectorPotential", "::", "usage"}], "=", 
+    "\"\<bsDipoleVectorPotential[position,point,direction] returns an \
+expression for the dipole vector potential of a moment pointing in direction, \
+centered at position, and evaluated at point. To achieve the classical \
+expression, multiply the result by \[Micro]0|m|/4\[Pi].\n\n\
+bsDipoleVectorPotential[positions,point,moment] adds up the vector potential \
+field for a list of dipole moments of the same strength.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"bsDipoleMagneticInduction", "::", "usage"}], "=", 
+   "\"\<bsDipoleMagneticInduction[position,point,direction] returns an \
+expression for the magnetic induction dipole field of a moment pointing in \
+direction, centered at position, and evaluated at point. To achieve the \
+classical expression, multiply the result by \[Micro]0|m|/4\[Pi].\n\n\
+bsDipoleMagneticInduction[positions,point,moment] adds up the induction field \
+for a list of dipole sources of the same strength.\>\""}], ";"}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 3.693417706572754*^9}, {
+   3.6934181121230507`*^9, 3.693418149415416*^9}, {3.693418206535817*^9, 
+   3.693418223006418*^9}, {3.6934189213539867`*^9, 3.693418976219302*^9}, {
+   3.693419062194605*^9, 3.693419116746484*^9}, {3.6934194684425907`*^9, 
+   3.693419657949499*^9}},ExpressionUUID->"541dc9f0-3798-42b7-8d3d-\
+206cbcecbd77"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 
+   3.6934177090390663`*^9}},ExpressionUUID->"820189cf-d6e5-4f32-9700-\
+0ae12227ff3e"],
+
+Cell[BoxData["\<\"BiotSavart`Private`\"\>"], "Output",
+ CellChangeTimes->{
+  3.693418340943874*^9},ExpressionUUID->"a05716c9-d5a9-42f9-b1cd-\
+3445e73ce0f0"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"First", " ", "the", " ", "vector", " ", "potential"}], " ", 
+   "*)"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitVectorPotential", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"xi", ":", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+         RowBox[{"xf", ":", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "}"}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], " ", ":=", " ", 
+     
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"ri", "=", 
+          RowBox[{"x", "-", "xi"}]}], ",", 
+         RowBox[{"rf", "=", 
+          RowBox[{"x", "-", "xf"}]}], ",", 
+         RowBox[{"l", "=", 
+          RowBox[{"xf", "-", "xi"}]}], ",", 
+         RowBox[{"L", "=", 
+          SqrtBox[
+           RowBox[{"l", ".", "l"}]]}], ",", 
+         RowBox[{"evec", "=", 
+          RowBox[{"l", "/", "L"}]}], ",", 
+         RowBox[{"Ri", "=", 
+          SqrtBox[
+           RowBox[{"ri", ".", "ri"}]]}], ",", 
+         RowBox[{"Rf", "=", 
+          SqrtBox[
+           RowBox[{"rf", ".", "rf"}]]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"L", "\[GreaterEqual]", "0"}], ",", 
+         RowBox[{"N", "[", 
+          RowBox[{"evec", " ", 
+           RowBox[{"Log", "[", 
+            FractionBox[
+             RowBox[{"Ri", "+", "Rf", "+", "L"}], 
+             RowBox[{"Ri", "+", "Rf", "-", "L"}]], "]"}]}], "]"}], ",", 
+         "\[Infinity]"}], "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitVectorPotential", "[", 
+      RowBox[{
+       RowBox[{"coil", ":", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ",", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"_", ",", "_", ",", "_"}], "}"}], ".."}]}], "}"}]}], ",", 
+       
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], " ", ":=", " ", 
+     
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsUnitVectorPotential", "[", 
+          RowBox[{"#", ",", "x"}], "]"}], "&"}], "/@", 
+        RowBox[{"Drop", "[", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"coil", ",", 
+             RowBox[{"RotateLeft", "[", "coil", "]"}]}], "}"}], "]"}], ",", 
+          RowBox[{"-", "1"}]}], "]"}]}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitVectorPotential", "[", 
+      RowBox[{"coils_List", ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsUnitVectorPotential", "[", 
+          RowBox[{"#", ",", "x"}], "]"}], "&"}], "/@", "coils"}], ")"}]}]}], 
+    ";"}], "\n"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 
+   3.6934177041095943`*^9}},ExpressionUUID->"0676d0c9-e067-40b5-a51a-\
+8b7b5acfc162"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Next", " ", "the", " ", "induction", " ", "field"}], "  ", "*)"}],
+   "\[IndentingNewLine]", "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitMagneticInduction", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"xi", ":", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+         RowBox[{"xf", ":", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "}"}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"ri", "=", 
+          RowBox[{"x", "-", "xi"}]}], ",", 
+         RowBox[{"rf", "=", 
+          RowBox[{"x", "-", "xf"}]}], ",", 
+         RowBox[{"l", "=", 
+          RowBox[{"xf", "-", "xi"}]}], ",", 
+         RowBox[{"L", "=", 
+          RowBox[{"N", "[", 
+           SqrtBox[
+            RowBox[{"l", ".", "l"}]], "]"}]}], ",", 
+         RowBox[{"evec", "=", 
+          RowBox[{"l", "/", "L"}]}], ",", 
+         RowBox[{"Ri", "=", 
+          SqrtBox[
+           RowBox[{"ri", ".", "ri"}]]}], ",", 
+         RowBox[{"Rf", "=", 
+          SqrtBox[
+           RowBox[{"rf", ".", "rf"}]]}]}], "}"}], ",", "\[IndentingNewLine]", 
+       
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"L", "\[GreaterEqual]", "0"}], ",", 
+         RowBox[{"N", "[", 
+          RowBox[{
+           RowBox[{"Cross", "[", 
+            RowBox[{"evec", ",", "ri"}], "]"}], 
+           FractionBox[
+            RowBox[{"2", "L", 
+             RowBox[{"(", 
+              RowBox[{"Ri", "+", "Rf"}], ")"}]}], 
+            RowBox[{"Ri", " ", "Rf"}]], 
+           FractionBox["1", 
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"Ri", "+", "Rf"}], ")"}], "2"], "+", 
+             SuperscriptBox["L", "2"]}]]}], "]"}], ",", "\[Infinity]"}], 
+        "]"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]",
+    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitMagneticInduction", "[", 
+      RowBox[{
+       RowBox[{"coil", ":", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ",", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"_", ",", "_", ",", "_"}], "}"}], ".."}]}], "}"}]}], ",", 
+       
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], " ", ":=", " ", 
+     
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsUnitMagneticInduction", "[", 
+          RowBox[{"#", ",", "x"}], "]"}], "&"}], "/@", 
+        RowBox[{"Drop", "[", 
+         RowBox[{
+          RowBox[{"Transpose", "[", 
+           RowBox[{"{", 
+            RowBox[{"coil", ",", 
+             RowBox[{"RotateLeft", "[", "coil", "]"}]}], "}"}], "]"}], ",", 
+          RowBox[{"-", "1"}]}], "]"}]}], ")"}]}]}], ";"}], "\n", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsUnitMagneticInduction", "[", 
+      RowBox[{"coils_List", ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsUnitMagneticInduction", "[", 
+          RowBox[{"#", ",", "x"}], "]"}], "&"}], "/@", "coils"}], ")"}]}]}], 
+    ";"}], "\[IndentingNewLine]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 
+   3.693417698002454*^9}},ExpressionUUID->"1c2309a8-a4d4-4c26-b503-\
+b3e693c0b6a8"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "Nest", " ", "the", " ", "absolute", " ", "value", " ", "of", " ", "the", 
+    " ", "induction", " ", "field"}], "  ", "*)"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsAbsMagneticInduction", "[", 
+      RowBox[{"coil_List", ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", "f", "}"}], ",", 
+       RowBox[{
+        RowBox[{"f", "=", 
+         RowBox[{"bsUnitMagneticInduction", "[", 
+          RowBox[{"coil", ",", "x"}], "]"}]}], ";", 
+        SqrtBox[
+         RowBox[{"f", ".", "f"}]]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 3.693417821342699*^9}, {
+   3.6934178517854977`*^9, 3.6934179426053057`*^9}, {3.693418177643901*^9, 
+   3.693418187648183*^9}},ExpressionUUID->"18207cf0-5e55-470c-b14e-\
+b638261a44ed"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"Dipole", " ", "expressions"}], "  ", "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsDipoleVectorPotential", "[", 
+      RowBox[{
+       RowBox[{"position", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"direction", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"dist", "=", 
+          RowBox[{"x", "-", "position"}]}], ",", 
+         RowBox[{"dir", " ", "=", " ", 
+          RowBox[{"direction", "/", 
+           RowBox[{"(", 
+            RowBox[{"direction", ".", "direction"}], ")"}]}]}]}], "}"}], ",", 
+       
+       RowBox[{
+        RowBox[{"Cross", "[", 
+         RowBox[{"dir", ",", "dist"}], "]"}], "/", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"dist", ".", "dist"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"3", "/", "2"}], ")"}]}], ")"}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsDipoleVectorPotential", "[", 
+      RowBox[{
+       RowBox[{"positions", ":", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ".."}], "}"}]}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"direction", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsDipoleVectorPotential", "[", 
+          RowBox[{"#", ",", "x", ",", "direction"}], "]"}], "&"}], "/@", 
+        "positions"}], ")"}]}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsDipoleMagneticInduction", "[", 
+      RowBox[{
+       RowBox[{"position", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"direction", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Block", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"dist", "=", 
+          RowBox[{"x", "-", "position"}]}], ",", 
+         RowBox[{"dir", " ", "=", " ", 
+          RowBox[{"direction", "/", 
+           RowBox[{"(", 
+            RowBox[{"direction", ".", "direction"}], ")"}]}]}]}], "}"}], ",", 
+       
+       RowBox[{
+        RowBox[{"3", " ", "dist", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"dir", ".", "dist"}], ")"}], "/", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{"dist", ".", "dist"}], ")"}], "^", 
+            RowBox[{"(", 
+             RowBox[{"5", "/", "2"}], ")"}]}], ")"}]}]}], "-", 
+        RowBox[{"dir", "/", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"dist", ".", "dist"}], ")"}], "^", 
+           RowBox[{"(", 
+            RowBox[{"3", "/", "2"}], ")"}]}], ")"}]}]}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"bsDipoleMagneticInduction", "[", 
+      RowBox[{
+       RowBox[{"positions", ":", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"_", ",", "_", ",", "_"}], "}"}], ".."}], "}"}]}], ",", 
+       RowBox[{"x", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}], ",", 
+       RowBox[{"direction", ":", 
+        RowBox[{"{", 
+         RowBox[{"_", ",", "_", ",", "_"}], "}"}]}]}], "]"}], ":=", 
+     RowBox[{"Plus", "@@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"bsDipoleMagneticInduction", "[", 
+          RowBox[{"#", ",", "x", ",", "direction"}], "]"}], "&"}], "/@", 
+        "positions"}], ")"}]}]}], ";"}]}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 3.693417821342699*^9}, {
+   3.6934178517854977`*^9, 3.6934179426053057`*^9}, {3.693418177643901*^9, 
+   3.693418230937483*^9}, {3.693418266443871*^9, 3.693418316182076*^9}, {
+   3.693419049462887*^9, 3.693419058247998*^9}, {3.6934191437725163`*^9, 
+   3.693419208335107*^9}, {3.6934192408166533`*^9, 3.693419252007127*^9}, {
+   3.693419362438115*^9, 
+   3.693419449815503*^9}},ExpressionUUID->"8267505c-b626-4e0b-87af-\
+c7c1c4971c91"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"End", "[", " ", "]"}], "\n"}], "\n", 
+ RowBox[{"EndPackage", "[", " ", "]"}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.693393990234613*^9, 3.693394186220559*^9}, {
+   3.69339422969036*^9, 3.693394689241086*^9}, {3.6933947193936157`*^9, 
+   3.693395004161558*^9}, {3.693395035348596*^9, 3.693395136618601*^9}, {
+   3.6933953136756163`*^9, 3.693395339332399*^9}, {3.6933958135105953`*^9, 
+   3.693395847655629*^9}, {3.6933961174769287`*^9, 3.69339630993476*^9}, {
+   3.693398021451603*^9, 3.693398031669485*^9}, {3.693398120101892*^9, 
+   3.6933981820307207`*^9}, 3.693398454619684*^9, {3.6934173557884197`*^9, 
+   3.6934174605176897`*^9}, {3.6934174907819366`*^9, 
+   3.6934177141695004`*^9}},ExpressionUUID->"694c2058-c7dd-41eb-9fc0-\
+2621575f06c0"],
+
+Cell[BoxData["\<\"BiotSavart`Private`\"\>"], "Output",
+ CellChangeTimes->{
+  3.693418341311913*^9},ExpressionUUID->"1bd43afc-c758-4dc7-a7e1-\
+e1b3e6d3270d"]
+}, Open  ]]
+},
+AutoGeneratedPackage->Automatic,
+WindowSize->{740, 867},
+WindowMargins->{{782, Automatic}, {Automatic, 50}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 4482, 75, 1391, "Input",ExpressionUUID->"541dc9f0-3798-42b7-8d3d-206cbcecbd77",
+ InitializationCell->True],
+Cell[CellGroupData[{
+Cell[5064, 99, 754, 12, 46, "Input",ExpressionUUID->"820189cf-d6e5-4f32-9700-0ae12227ff3e",
+ InitializationCell->True],
+Cell[5821, 113, 156, 3, 34, "Output",ExpressionUUID->"a05716c9-d5a9-42f9-b1cd-3445e73ce0f0"]
+}, Open  ]],
+Cell[5992, 119, 4042, 112, 434, "Input",ExpressionUUID->"0676d0c9-e067-40b5-a51a-8b7b5acfc162",
+ InitializationCell->True],
+Cell[10037, 233, 4374, 121, 441, "Input",ExpressionUUID->"1c2309a8-a4d4-4c26-b503-b3e693c0b6a8",
+ InitializationCell->True],
+Cell[14414, 356, 1586, 36, 144, "Input",ExpressionUUID->"18207cf0-5e55-470c-b14e-b638261a44ed",
+ InitializationCell->True],
+Cell[16003, 394, 5336, 143, 425, "Input",ExpressionUUID->"8267505c-b626-4e0b-87af-c7c1c4971c91",
+ InitializationCell->True],
+Cell[CellGroupData[{
+Cell[21364, 541, 804, 14, 89, "Input",ExpressionUUID->"694c2058-c7dd-41eb-9fc0-2621575f06c0",
+ InitializationCell->True],
+Cell[22171, 557, 156, 3, 34, "Output",ExpressionUUID->"1bd43afc-c758-4dc7-a7e1-e1b3e6d3270d"]
+}, Open  ]]
+}
+]
+*)
+
