@@ -533,6 +533,8 @@ Begin["Private`"];
 
 
 (* ::Input::Initialization:: *)
+Options[MakeWireSegment]={WireColor->Red};
+
 MakeWireSegment[positions:{{_,_,_},{_,_,_},___},current_,opts:OptionsPattern[]]:=
 Block[{rules}, 
 rules=FilterRules[{opts}, Options[MakeWireRectangle]];
@@ -601,6 +603,18 @@ WireCircularArc[translation,direction/Norm[direction],radius,{theta0,theta1},cur
 
 
 (* ::Input::Initialization:: *)
+Options[MakeWireEllipse]={WireColor->Red};
+
+
+
+(* ::Input::Initialization:: *)
+Options[MakeWireEllipsoidalArc]={WireColor->Red};
+
+
+
+(* ::Input::Initialization:: *)
+Options[MakeWireSpline]={WireColor->Red};
+
 MakeWireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,opts:OptionsPattern[]]:=
 Block[{rules}, 
 rules=FilterRules[{opts}, Options[MakeWireSpline]];
@@ -659,6 +673,15 @@ coordinates=(RotationMatrix[{{0,0,1},direction}].{radius Sin[#],radius Cos[#],0}
 ];
 
 
+(* ::Input::Initialization:: *)
+DrawWire[l:WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_],opts:OptionsPattern[]]:=
+Block[{rules},
+rules=FilterRules[{opts}, Options[DrawWire]];
+If[Sign[current]==-1,
+{WireColor/.Join[rules,{color}],Arrow[Tube[BezierCurve[Reverse[positions]]]]},
+{WireColor/.Join[rules,{color}],Arrow[Tube[BezierCurve[positions]]]}
+]
+];
 
 
 (* ::Input::Initialization:: *)
@@ -703,7 +726,7 @@ s.NormalWireSegmentMMagneticInductionGradient[t.(p-start),Sqrt[v.v]]
 10^-7 current (Plus@@((LineSegment@@#)&/@Partition[positions,2,1]))
 ];
 
-NormalWireSegmentMagneticVectorPotential[{x_,y_,z_},end_]:=
+NormalWireSegmentMMagneticInductionGradient[{x_,y_,z_},end_]:=
 {0,0,0};
 
 
@@ -883,10 +906,12 @@ NormalWireEllipsoidalArcMagneticVectorPotential[{x_,y_,z_},end_]:=
 
 
 (* ::Input::Initialization:: *)
-MagneticVectorPotential[p:{_,_,_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:={0,0,0};
-
-NormalWireSplineMagneticVectorPotential[{x_,y_,z_},end_]:=
-{0,0,0};
+MagneticVectorPotential[p:{_,_,_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:=
+Block[{basis,equations,t},
+basis={-(-1+t)^3,3 (-1+t)^2,-3 (-1+t) t^2,t^3};
+equations=(basis.#)&/@Transpose[positions];
+10^-7 current NIntegrate[equations/Norm[equations-p],{t,0,1},Method->"MonteCarlo"]
+];
 
 
 (* ::Input::Initialization:: *)
