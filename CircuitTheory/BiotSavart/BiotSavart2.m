@@ -24,6 +24,54 @@ BeginPackage["BiotSavart`"];
 
 
 (* ::Input::Initialization:: *)
+BiotSavart::usage="BiotSavart is a package to specify current carrying coils and evaluate their field values. The package works with wire objects (\!\(\*
+StyleBox[\"WireSegment\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireRectangle\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireCircle\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireCurcularArd\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireEllipse\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireEllipsoidalArc\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireSpline\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireGroup\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"WireRepeated\",\nFontSlant->\"Italic\"]\)), constructor functions (\!\(\*
+StyleBox[\"MakeWireSegment\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"MakeWireRectangle\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"MakeWireCircle\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"MakeWireSpline\",\nFontSlant->\"Italic\"]\), etc., as well as \!\(\*
+StyleBox[\"TranslateWire\",\nFontSlant->\"Italic\"]\) to displace the origin of a wire), wire plotting functions (\!\(\*
+StyleBox[\"DrawWire\",\nFontSlant->\"Italic\"]\)) that take wire specifications as an argument, and field evaluation functions (\!\(\*
+StyleBox[\"MagneticVectorPotential\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"MagneticInduction\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"MagneticInductionGradient\",\nFontSlant->\"Italic\"]\)) that require both a wire specification, and an evaluation point. Please consult the individual functions for further details.";
+
+
+(* ::Input::Initialization:: *)
 WireColor::usage="\!\(\*
 StyleBox[\"WireColor\",\nFontSlant->\"Italic\"]\) is a symbol rule for the color of a loop. Used in drawing the loop. See \!\(\*
 StyleBox[\"DrawCurrentLoop\",\nFontSlant->\"Italic\"]\)\!\(\*
@@ -202,6 +250,62 @@ StyleBox[\"WireColor\",\nFontSlant->\"Italic\"]\)\!\(\*
 StyleBox[\"->\",\nFontSlant->\"Italic\"]\)\!\(\*
 StyleBox[\"color\",\nFontSlant->\"Italic\"]\). See \!\(\*
 StyleBox[\"MakeWireSpline\",\nFontSlant->\"Italic\"]\)[] for a constructor.";
+
+
+(* ::Input::Initialization:: *)
+WireGroup::usage="\!\(\*
+StyleBox[\"WireGroup\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"[\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"{\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[SubscriptBox[\"w\", \"1\"],\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[SubscriptBox[\"w\", \"2\"],\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"...\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[SubscriptBox[\"w\", \"n\"],\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"}\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"]\",\nFontSlant->\"Italic\"]\) groups a list of two or more wire objects into a group that will be treated as a unit for the purposes of drawing or field computation.";
+
+
+(* ::Input::Initialization:: *)
+WireRepeated::usage="\!\(\*
+StyleBox[\"WireRepeated\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"[\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"w\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"{\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dx\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dy\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dz\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"}\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"n\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"]\",\nFontSlant->\"Italic\"]\) builds a composite object that is repeated \!\(\*
+StyleBox[\"n\",\nFontSlant->\"Italic\"]\) times with the provided spatial offset \!\(\*
+StyleBox[\"{\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dx\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dy\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"dz\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"}\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\".\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)Any wire object, including a grouped or repeated object, can be provided as argument.";
+
+
+(* ::Input::Initialization:: *)
+VectorPotentialMultipole::usage="VectorPotentialMultipole[{\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, \!\(\*SubscriptBox[\(r\), \(i\)]\), \!\(\*SubscriptBox[\(r\), \(o\)]\), {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}] defines the multipole expansion of the vector potential of a wire object relative to a centre {\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, with inner and outer radii \!\(\*SubscriptBox[\(r\), \(i\)]\) and \!\(\*SubscriptBox[\(r\), \(o\)]\). At points further than the outer radius, only the dipole term is required. At points within the inner and outer radius, the entire expansion is needed. Inside the inner radius, an explicit formula is needed for the field. The moments are defined by {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}.";
+
+MagneticInductionMultipole::usage="MagneticInductionMultipole[{\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, \!\(\*SubscriptBox[\(r\), \(i\)]\), \!\(\*SubscriptBox[\(r\), \(o\)]\), {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}] defines the multipole expansion of the magnetic induction of a wire object relative to a centre {\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, with inner and outer radii \!\(\*SubscriptBox[\(r\), \(i\)]\) and \!\(\*SubscriptBox[\(r\), \(o\)]\). At points further than the outer radius, only the dipole term is required. At points within the inner and outer radius, the entire expansion is needed. Inside the inner radius, an explicit formula is needed for the field. The moments are defined by {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}.";
+
+MagneticInductionGradientMultipole::usage="MagneticInductionGradientMultipole[{\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, \!\(\*SubscriptBox[\(r\), \(i\)]\), \!\(\*SubscriptBox[\(r\), \(o\)]\), {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}] defines the multipole expansion of the magnetic induction gradient of a wire object relative to a centre {\!\(\*SubscriptBox[\(c\), \(x\)]\),\!\(\*SubscriptBox[\(c\), \(y\)]\),\!\(\*SubscriptBox[\(c\), \(z\)]\)}, with inner and outer radii \!\(\*SubscriptBox[\(r\), \(i\)]\) and \!\(\*SubscriptBox[\(r\), \(o\)]\). At points further than the outer radius, only the dipole term is required. At points within the inner and outer radius, the entire expansion is needed. Inside the inner radius, an explicit formula is needed for the field. The moments are defined by {\!\(\*SubscriptBox[\(m\), \(0\)]\),\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...\!\(\*SubscriptBox[\(m\), \(n\)]\)}.";
+
+MultipoleSegment::usage="MultipoleSegment[m, wire] defines a multipole expansion m of a current carrying wire.  The multipole can be either for the vector potential, magnetic induction, or the magnetic induction gradient. The wire is specified by a wire object. MultipoleSegment[{\!\(\*SubscriptBox[\(m\), \(1\)]\),\!\(\*SubscriptBox[\(m\), \(2\)]\),...,\!\(\*SubscriptBox[\(m\), \(m\)]\)}, wire] specifies multipoles for more than one field associated with the wire.";
 
 
 (* ::Input::Initialization:: *)
@@ -437,6 +541,37 @@ StyleBox[\"color\",\nFontSlant->\"Italic\"]\)] defines a Bezier spline wire with
 
 
 (* ::Input::Initialization:: *)
+MakeWireGroup::usage="MakeWireGroup[]";
+
+
+(* ::Input::Initialization:: *)
+MakeWireRepeated::usage="MakeWireRepeated[]";
+
+
+(* ::Input::Initialization:: *)
+TranslateWire::usage="\!\(\*
+StyleBox[\"TranslateWire\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"[\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"w\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\" \",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"{\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"x\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"y\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\",\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"z\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"}\",\nFontSlant->\"Italic\"]\)\!\(\*
+StyleBox[\"]\",\nFontSlant->\"Italic\"]\) translates the wire object by the specified offset.";
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment::usage="MakeMultipoleSegment[s, f] defines a multipole expansion object of a specific field \!\(\*
+StyleBox[\"f\",\nFontSlant->\"Italic\"]\) for a given segment \!\(\*
+StyleBox[\"s\",\nFontSlant->\"Italic\"]\). The optional argument f specifies the field that will be approximated via one of the following strings: VectorPotential, MagneticInduction, MagneticInductionGradient, or All. If no argument is given, the vector potential will be defined. If more than one field is required, the field strings are supplied as a list. All specifies that all the fields are required.";
+
+
+(* ::Input::Initialization:: *)
 DrawWire::usage="\!\(\*
 StyleBox[\"DrawWire\",\nFontSlant->\"Italic\"]\)\!\(\*
 StyleBox[\"[\",\nFontSlant->\"Italic\"]\)\!\(\*
@@ -541,6 +676,9 @@ rules=FilterRules[{opts}, Options[MakeWireRectangle]];
 WireSegment[positions,current, WireColor->(WireColor/.Join[rules,Options[MakeWireRectangle]])]
 ];
 
+TranslateWire[WireSegment[positions:{{_,_,_},{_,_,_},___},current_,color_],p:{_,_,_}]:=
+WireSegment[(p+#)&/@positions,current,color];
+
 
 (* ::Input::Initialization:: *)
 Options[MakeWireRectangle]={WireColor->Red};
@@ -563,6 +701,9 @@ rules=FilterRules[{opts}, Options[MakeWireRectangle]];
 WireRectangle[position,direction/Norm[direction],{xedge,yedge,angle},current,WireColor->(WireColor/.Join[rules,Options[MakeWireRectangle]])]
 ];
 
+TranslateWire[WireRectangle[translation:{_,_,_},direction:{_,_,_},{xedge_,yedge_,angle_},current_,color_],p:{_,_,_}]:=
+WireRectangle[translation+p,direction,{xedge,yedge,angle},current,color];
+
 
 (* ::Input::Initialization:: *)
 Options[MakeWireCircle]={WireColor->Red};
@@ -572,15 +713,18 @@ rules=FilterRules[{opts}, Options[MakeWireCircle]];
 WireCircle[{0,0,0},{0,0,1},radius,current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircle]])]
 ];
 
-MakeWireCircle[position:{_,_,_},radius_,current_,opts:OptionsPattern[]]:=Block[{rules},
+MakeWireCircle[translation:{_,_,_},radius_,current_,opts:OptionsPattern[]]:=Block[{rules},
 rules=FilterRules[{opts}, Options[MakeWireCircle]];
-WireCircle[position,{0,0,1},radius,current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircle]])]
+WireCircle[translation,{0,0,1},radius,current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircle]])]
 ];
 
-MakeWireCircle[position:{_,_,_},direction:{_,_,_},radius_,current_,opts:OptionsPattern[]]:=Block[{rules},
+MakeWireCircle[translation:{_,_,_},direction:{_,_,_},radius_,current_,opts:OptionsPattern[]]:=Block[{rules},
 rules=FilterRules[{opts}, Options[MakeWireCircle]];
-WireCircle[position,direction/Norm[direction],radius,current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircle]])]
+WireCircle[translation,direction/Norm[direction],radius,current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircle]])]
 ];
+
+TranslateWire[WireCircle[translation:{_,_,_},direction:{_,_,_},radius_,current_,color_],p:{_,_,_}]:=
+WireCircle[translation+p,direction,radius,current,color];
 
 
 (* ::Input::Initialization:: *)
@@ -601,6 +745,9 @@ rules=FilterRules[{opts}, Options[MakeWireCircularArc]];
 WireCircularArc[translation,direction/Norm[direction],radius,{theta0,theta1},current,WireColor->(WireColor/.Join[rules,Options[MakeWireCircularArc]])]
 ];
 
+TranslateWire[WireCircularArc[translation:{_,_,_},direction:{_,_,_},radius_,{theta0_,theta1_},current_,color_],p:{_,_,_}]:=
+WireCircularArc[translation+p,direction,radius,{theta0,theta1},current,color];
+
 
 (* ::Input::Initialization:: *)
 Options[MakeWireEllipse]={WireColor->Red};
@@ -619,6 +766,76 @@ MakeWireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,opts:Options
 Block[{rules}, 
 rules=FilterRules[{opts}, Options[MakeWireSpline]];
 WireSpline[positions,current, WireColor->(WireColor/.Join[rules,Options[MakeWireSpline]])]
+];
+
+TranslateWire[WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_],p:{_,_,_}]:=
+WireSpline[(p+#)&/@positions,current,color];
+
+
+(* ::Input::Initialization:: *)
+MakeWireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}]:=WireGroup[g];
+
+TranslateWire[WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}],p:{_,_,_}]:=
+WireGroup[TranslateWire[#,p]&/@g];
+
+
+(* ::Input::Initialization:: *)
+MakeWireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_]:=
+WireRepeated[o,offset,nRepeat];
+
+TranslateWire[WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_],p:{_,_,_}]:=
+WireRepeated[TranslateWire[o,p],offset,nRepeat];
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment[ws:WireSegment[positions:{left:{_,_,_},right:{_,_,_}},current_,color_],field_String]:=Block[{cg,rDash,lWire,n=20,VectorPotentialLineIntegration},
+rDash[s_]:=((1-s) left+s right)-cg; (* Interpolate the position on the line *)
+
+VectorPotentialLineIntegration[]:=
+FunctionInterpolation[NIntegrate[(s lWire)^# LegendreP[#,Cos[\[Phi]]],{s,0,1}],{\[Phi],0,2\[Pi]}]&/@Range[0,n-1];
+
+(* Chop[FunctionInterpolation[NIntegrate[(Sqrt[rDash[s].rDash[s]])^#LegendreP[#,Cos[\[Phi]]],{s,0,1},MaxRecursion\[Rule]2,Method\[Rule]{"LobattoKronrodRule","SymbolicProcessing"\[Rule]False}],{\[Phi],0,\[Pi]}]]&/@Range[0,n-1]; For evaluation, we need to consider the projection allowing the cone. *)
+
+If[field=="VectorPotential",
+cg=(left+right)/2;
+lWire=(right-left).(right-left);
+MultipoleSegment[VectorPotentialMultipole[cg,lWire,5 lWire,VectorPotentialLineIntegration[]],ws]
+]
+];
+
+(*MakeMultipoleSegment[ws:WireSegment[positions:{{_,_,_},{_,_,_},..},current_,color_],field_String]:=
+MakeMultipoleSegment[WireSegment[#,current,color],field]&/@Partition[positions,2,1];*)
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment[ws:WireRectangle[translation:{_,_,_},direction:{_,_,_},{xedge_,yedge_,angle_},current_,color_],field_String]:=Block[{},
+{}
+];
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment[ws:WireCircle[translation:{_,_,_},direction:{_,_,_},radius_,current_,color_],field_String]:=Block[{},
+{}
+];
+
+MakeMultipoleSegment[ws:WireCircularArc[translation:{_,_,_},direction:{_,_,_},radius_,{theta0_,theta1_},current_,color_],field_String]:=Block[{},
+{}
+];
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment[ws:WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_],field_String]:=Block[{},
+{}
+];
+
+MakeMultipoleSegment[ws:WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}],field_String]:=Block[{},
+{}
+];
+
+
+(* ::Input::Initialization:: *)
+MakeMultipoleSegment[ws:WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_],field_String]:=Block[{},
+{}
 ];
 
 
@@ -652,25 +869,34 @@ coordinates=(RotationMatrix[{{0,0,1},direction}].#+translation)&/@coordinates
 
 
 (* ::Input::Initialization:: *)
-DrawWire[l:WireCircle[translation:{_,_,_},direction:{_,_,_},radius_,current_,color_],opts:OptionsPattern[]]:=Block[{coordinates,rules},
+DrawWire[l:WireCircle[translation:{_,_,_},direction:{_,_,_},radius_,current_,color_],opts:OptionsPattern[]]:=Block[{coordinates,rules,backbone},
 rules=FilterRules[{opts}, Options[DrawWire]];
-If[Sign[current]==-1,
-coordinates=Reverse[(RotationMatrix[{{0,0,1},direction}].{radius Sin[#],radius Cos[#],0}+translation)&/@(Range[n=41,0,-1]*(2\[Pi]/n))],
-coordinates=(RotationMatrix[{{0,0,1},direction}].{radius Sin[#],radius Cos[#],0}+translation)&/@(Range[n=41,0,-1]*(2\[Pi]/n))];
-{WireColor/.Join[rules,{color}],Arrow[Tube[coordinates,radius 0.01],radius 0.05]}
+rules=FilterRules[{opts}, Options[DrawWire]];
+backbone=splineCircle[{0,0,0},radius,{0,2\[Pi]}];
+backbone=BSplineCurve@@Join[{((RotationMatrix[{{0,0,1},direction}].#)+translation)&/@First[List@@backbone]},
+Rest[List@@backbone]];
+{WireColor/.Join[rules,{color}],Arrow[backbone,radius 0.05]}
 ];
 
-
-(* ::Input::Initialization:: *)
 DrawWire[l:WireCircularArc[translation:{_,_,_},direction:{_,_,_},radius_,{theta0_,theta1_},current_,color_],opts:OptionsPattern[]]:=
-Block[{coordinates,rules,npoints},
+Block[{coordinates,rules,backbone},
 rules=FilterRules[{opts}, Options[DrawWire]];
-npoints=IntegerPart[41(theta1-theta0)/2\[Pi]]+2;
-If[Sign[current]==-1,
-coordinates=Reverse[(RotationMatrix[{{0,0,1},direction}].{radius Sin[#],radius Cos[#],0}+translation)&/@(Range[npoints,0,-1]*((theta1-theta0)/npoints)+theta1)],
-coordinates=(RotationMatrix[{{0,0,1},direction}].{radius Sin[#],radius Cos[#],0}+translation)&/@(Range[npoints,0,-1]*((theta1-theta0)/npoints)+theta1)];
-{WireColor/.Join[rules,{color}],Arrow[Tube[coordinates,radius 0.01],radius 0.05]}
+backbone=splineCircle[{0,0,0},radius,{theta0,theta1}];
+backbone=BSplineCurve@@Join[{((RotationMatrix[{{0,0,1},direction}].#)+translation)&/@First[List@@backbone]},
+Rest[List@@backbone]];
+{WireColor/.Join[rules,{color}],Arrow[backbone,radius 0.05]}
 ];
+
+splineCircle[m_List,r_,angles_List: {0,2 \[Pi]}]:=Module[{seg,\[Phi],start,end,pts,w,k},{start,end}=Mod[angles//N,2 \[Pi]];
+If[end<=start,end+=2 \[Pi]];
+seg=Quotient[end-start//N,\[Pi]/2];
+\[Phi]=Mod[end-start//N,\[Pi]/2];
+If[seg==4,seg=3;\[Phi]=\[Pi]/2];
+pts=r RotationMatrix[start].#&/@Join[Take[{{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1},{0,-1}},2 seg+1],RotationMatrix[seg \[Pi]/2].#&/@{{1,Tan[\[Phi]/2]},{Cos[\[Phi]],Sin[\[Phi]]}}];
+If[Length[m]==2,pts=m+#&/@pts,pts=m+#&/@Transpose[Append[Transpose[pts],ConstantArray[0,Length[pts]]]]];
+w=Join[Take[{1,1/Sqrt[2],1,1/Sqrt[2],1,1/Sqrt[2],1},2 seg+1],{Cos[\[Phi]/2],1}];
+k=Join[{0,0,0},Riffle[#,#]&@Range[seg+1],{seg+1}];
+BSplineCurve[pts,SplineDegree->2,SplineKnots->k,SplineWeights->w]]/;Length[m]==2||Length[m]==3
 
 
 (* ::Input::Initialization:: *)
@@ -682,6 +908,22 @@ If[Sign[current]==-1,
 {WireColor/.Join[rules,{color}],Arrow[Tube[BezierCurve[positions]]]}
 ]
 ];
+
+
+(* ::Input::Initialization:: *)
+DrawWire[WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_]]:=
+DrawWire[TranslateWire[o,offset #]]&/@Range[0,(nRepeat-1)];
+
+
+(* ::Input::Initialization:: *)
+DrawWire[WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}]]:=
+DrawWire[#]&/@g;
+
+
+(* ::Input::Initialization:: *)
+DrawWire[
+MultipoleSegment[{(_VectorPotentialMultipole|_MagneticInductionMultipole|_MagneticInductionGradientMultipole)..}, w:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)]]:=
+DrawWire[w];
 
 
 (* ::Input::Initialization:: *)
@@ -768,7 +1010,28 @@ EndPackage[];
 
 
 (* ::Input::Initialization:: *)
-MagneticVectorPotential[{_,_,_},l:WireCircle[{_,_,_},{_,_,_},0,_,_]]:=0;
+MagneticVectorPotential[p:{_,_,0},l:WireCircle[position:{_,_,_},direction:{_,_,_},radius_,current_,color_]]:={0,0,0};
+
+MagneticVectorPotential[p:{_,_,_},l:WireCircle[position:{_,_,_},direction:{_,_,_},radius_,current_,color_]]:=
+Block[{t,s,CylindricalToCartesian,CartesianToCylindrical},
+CylindricalToCartesian[{r_,\[Phi]_,z_}]:={r Cos[\[Phi]],r Sin[\[Phi]],z};
+CartesianToCylindrical[{x_,y_,z_}]:={Sqrt[x^2+y^2],ArcTan[y,x],z};
+
+If[direction[[1]]==direction[[2]]==0,
+t=s=IdentityMatrix[3],
+t=RotationMatrix[{{0,0,1},direction}];
+s=RotationMatrix[{direction,{0,0,1}}]
+];
+s.CylindricalToCartesian[NormalWireCircleMagneticInduction[CartesianToCylindrical[t.(p-position)],radius,current]]
+];
+
+NormalWireCircleMagneticVectorPotential[{r_,\[Phi]_,z_},radius_,current_]:=
+Block[{a2,k2,k},
+a2=z^2+(radius+r)^2;
+k2=4 r radius/a2;
+k=Sqrt[k2];
+(radius/r)((1-k2/2)EllipticK[k]-EllipticE[k])
+];
 
 
 (* ::Input::Initialization:: *)
@@ -809,44 +1072,89 @@ k2=1-\[Alpha]2/\[Beta]2; (* k^2= m *)
 
 
 (* ::Input::Initialization:: *)
+MagneticInductionGradient[p:{_,_,_},l:WireCircle[position:{_,_,_},direction:{_,_,_},radius_,current_,color_]]:=
+Block[{t,s,CylindricalToCartesian,CartesianToCylindrical,IntermediateTensor},
+CylindricalToCartesian[{r_,\[Phi]_,z_}]:={r Cos[\[Phi]],r Sin[\[Phi]],z};
+CartesianToCylindrical[{x_,y_,z_}]:={Sqrt[x^2+y^2],ArcTan[y,x],z};
 
-NormalLoopGradMagneticInduction[{x_,y_,z_},radius_,current_]:=Block[{C,a2,a4,a6,r2,x2,y2,z2,x4,z4,\[Rho]2,\[Alpha]2,\[Beta]2,\[Gamma],k2,dBxdx,dBxdy,dBxdz,dBydx,dBydy,dBydz,dBzdx,dBzdy,dBzdz},
-C=4 10^-7 current;
-a2=radius^2;
-a4=a2^2;
-a6=a2^3;
-x2=x^2;
-y2=y^2;
-z2=z^2;
-x4=x2^2;
-z4=z2^2;
-r2=x2+y2+z2;
-\[Rho]2=x2+y2;
-\[Alpha]2=a2+r2-2 radius Sqrt[\[Rho]2];
-\[Beta]2=a2+r2+2 radius Sqrt[\[Rho]2];
-\[Gamma]=x2-y2;
-k2=1-\[Alpha]2/\[Beta]2; (* k^2= m *)
-
-dBxdx=(C  z)/(2 \[Alpha]2^2Sqrt[\[Beta]2]^3 \[Rho]2) ((a4(-\[Gamma](3 z2+a2)+\[Rho]2(8x2-y2))-a2(\[Rho]2^2(5x2+y2)-2\[Rho]2 z2(2x2+y2)+3z4 \[Gamma])-r2^2(2x4+\[Gamma](y2+z2)))EllipticE[k2]+(a2(\[Gamma](a2+2z2)-\[Rho]2(3x2-2y2))+r2(2x4+\[Gamma](y2+z2)))\[Alpha]2 EllipticK[k2]);
-dBxdy=(C x y z)/(2 \[Alpha]2^2Sqrt[\[Beta]2]^3 \[Rho]2^2) ((3a4(3\[Rho]2-2z2)-r2^2(2r2+\[Rho]2)-2a6-2a2(2\[Rho]2^2-\[Rho]2 z2+3z4))EllipticE[k2]-(r2(2r2+\[Rho]2)-a2(5\[Rho]2-4z2)+2a4)\[Alpha]2 EllipticK[k2]);
-dBxdz=(C x)/(2 \[Alpha]2^2Sqrt[\[Beta]2]^3 \[Rho]2) (((\[Rho]2-a2)^2(\[Rho]2+a2)+2z2(a4-6a2 \[Rho]2+\[Rho]2^2)+z4(a2+\[Rho]2))EllipticE[k2]-((\[Rho]2-a2)^2+z2(\[Rho]2+a2))\[Alpha]2 EllipticK[k2]);
-
-dBydx=dBxdy;
-dBydy=(C  z)/(2 \[Alpha]2^2Sqrt[\[Beta]2]^3 \[Rho]2) ((a4(\[Gamma](3z2+a2)+\[Rho]2(8y2-x2))-a2(\[Rho]2^2(5y2+x2)-2\[Rho]2 z2(2z2+x2)-3z4 \[Gamma])-r2^2(2y2^2-\[Gamma](x2+z2)))EllipticE[k2]+(a2(-\[Gamma](a2+2z2)-\[Rho]2(3y2-2x2))+r2(2y2^2-\[Gamma](x2+y2)))\[Alpha]2 EllipticK[k2]);
-dBydz=y/x dBxdz; 
-
-dBzdx=dBxdz;
-dBzdy=dBydz;
-dBzdz=(C z)/(2\[Alpha]2 Sqrt[\[Beta]2]^3) ((6a2(\[Rho]2-z2)-7a4+r2^2)EllipticE[k2]+\[Alpha]2(a2-r2)EllipticK[k2]);
-{{dBxdx,dBxdy,dBxdz},{dBydx,dBydy,dBydz},{dBzdx,dBzdy,dBzdz}}
+If[direction[[1]]==direction[[2]]==0,
+t=s=IdentityMatrix[3],
+t=RotationMatrix[{{0,0,1},direction}];
+s=RotationMatrix[{direction,{0,0,1}}]
 ];
+IntermediateTensor=CylindricalToCartesian[#]&/@Transpose[CylindricalToCartesian[#]&/@Transpose[NormalWireCircleMagneticInductionGradient[CartesianToCylindrical[t.(p-position)],radius,current]]];
+s.IntermediateTensor.Transpose[s]
+];
+
+(* CASE evaluation point on loop *)
+NormalWireCircleMagneticInductionGradient[{radius_,\[Phi]_,0},radius_,current_]:=
+Block[{},
+{{0,0,0},
+{0,0,0},
+{0,0,0}}
+];
+(* CASE evaluation point on axis *)
+NormalWireCircleMagneticInductionGradient[{0,\[Phi]_,z_},radius_,current_]:=
+Block[{r1},
+r1=radius;
+{{-3\[Pi] (-z) r1^2/(2(z^2+(r1+r)^2)^(5/2)),0,0},
+{0,0,0},
+{0,0,3\[Pi] (-z) r1^2/(z^2+(r1+r)^2)^(5/2)}}
+];
+(* CASE any other point *)
+NormalWireCircleMagneticInductionGradient[{r_,\[Phi]_,z_},radius_,current_]:=
+Block[{r1,k},
+r1=radius;
+k=Sqrt[4 r r1/((-z)^2+(r1+r)^2)];
+{1/(2 r (z^2+(r1+r)^2)^(3/2)k^2(1-k^2)) {(-z)(P[r,z,r1,k]EllipticK[k]+Q[r,z,r1,k]EllipticE[k]),0,k^2(S[r,z,r1,k]EllipticK[k]+T[r,z,r1,k]EllipticE[k])},
+{0,0,0},
+1/(2 r (z^2+(r1+r)^2)^(3/2)k^2(1-k^2)) {(S[r,z,r1,k]EllipticK[k]+T[r,z,r1,k]EllipticE[k]),0,(-z)(U[r,z,r1,k]EllipticK[k]+V[r,z,r1,k]EllipticE[k])}}
+];
+
+P[r_,z_,r1_,k_]:=(r1+r)k^4+2(4r1-r)k^2-8r1;
+Q[r_,z_,r1_,k_]:=2/(1-k^2)((r1+r) k^6-r k^4-(6r1-r)k^2+4r1);
+S[r_,z_,r1_,k_]:=k^2((z^2+(r1+r)^2)+(r1+r)^2)-2(r1+r)^2;
+T[r_,z_,r1_,k_]:=1/(1-k^2)(((r1+r)^2-z^2)k^4-((z^2+(r1+r)^2)+2(r1+r)^2)k^2+2(r1+r)^2);
+U[r_,z_,r1_,k_]:=2r-(r1+r)k^2;
+V[r_,z_,r1_,k_]:=2/(1-k^2)((r1+r)k^4-(2r1+r)k^2+r);
 
 
 (* ::Input::Initialization:: *)
-MagneticVectorPotential[p:{_,_,_},WireCircularArc[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:={0,0,0};
+MagneticVectorPotential[p:{_,_,_},WireCircularArc[position:{_,_,_},direction:{_,_,_},radius_,{\[Phi]1_,\[Phi]2_},current_,color_]]:=
+Block[{t,s,CylindricalToCartesian,CartesianToCylindrical,r,\[Phi],\[Zeta]},
+CylindricalToCartesian[{r_,\[Phi]_,z_}]:={r Cos[\[Phi]],r Sin[\[Phi]],z};
+CartesianToCylindrical[{x_,y_,z_}]:={Sqrt[x^2+y^2],ArcTan[x,y],z};
 
-NormalWireCircularArcMagneticVectorPotential[{x_,y_,z_},end_]:=
-{0,0,0};
+If[direction[[1]]==direction[[2]]==0,
+t=s=IdentityMatrix[3],
+t=RotationMatrix[{{0,0,1},direction}];
+s=RotationMatrix[{direction,{0,0,1}}]
+];
+s.CylindricalToCartesian[
+NormalWireCircularArcMagneticVectorPotential[CartesianToCylindrical[t.p-position],\[Phi]1,\[Phi]2,radius,0]
+]
+];
+
+(* This function returns a vector in cylindrical coordinates *)
+NormalWireCircularArcMagneticVectorPotential[{r_,\[Phi]_,z_},\[Phi]1_,\[Phi]2_,r1_,z1_]:=
+Block[{a,a2,k2,\[Alpha]1,\[Alpha]2,ui,Ahat,ToCartesian,u},
+Ahat[\[Alpha]i_]:=
+If[Abs[\[Alpha]i]<=\[Pi]/2,
+ui=u/.FindRoot[JacobiAmplitude[u,k2]-Abs[\[Alpha]i],{u,0}];
+a/r{JacobiDN[ui,k2],
+Sign[\[Alpha]i]((1-k2/2)EllipticF[Abs[\[Alpha]i],Sqrt[k2]]+EllipticE[Abs[\[Alpha]i],Sqrt[k2]]),0},
+ui=u/.FindRoot[JacobiAmplitude[u,k2]-(\[Pi]-Abs[\[Alpha]i]),{u,0}];
+a/r{JacobiDN[ui,k2],
+Sign[\[Alpha]i](2(1-k2/2)EllipticF[\[Pi]/2,Sqrt[k2]]+2EllipticE[\[Pi]/2,Sqrt[k2]]-(1-k2/2)EllipticF[\[Pi]-Abs[\[Alpha]i],Sqrt[k2]]-EllipticE[\[Pi]-Abs[\[Alpha]i],Sqrt[k2]]),0}
+];
+
+\[Alpha]1=(\[Pi]+\[Phi]-\[Phi]1)/2;
+\[Alpha]2=(\[Pi]+\[Phi]-\[Phi]2)/2;
+a2=(z1-z)^2+(r1+r)^2;
+a=Sqrt[a2];
+k2=4 r r1/a2;
+Chop[Ahat[\[Alpha]1]-Ahat[\[Alpha]2]]
+];
 
 
 (* ::Input::Initialization:: *)
@@ -906,23 +1214,90 @@ NormalWireEllipsoidalArcMagneticVectorPotential[{x_,y_,z_},end_]:=
 
 
 (* ::Input::Initialization:: *)
-MagneticVectorPotential[p:{_,_,_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:=
-Block[{basis,equations,t},
-basis={-(-1+t)^3,3 (-1+t)^2,-3 (-1+t) t^2,t^3};
-equations=(basis.#)&/@Transpose[positions];
-10^-7 current NIntegrate[equations/Norm[equations-p],{t,0,1},Method->"MonteCarlo"]
+MagneticVectorPotential[p:{x_,y_,z_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:=
+Block[{basis,dbasis,equations,t},
+basis={-(-1+t)^3,3 (-1+t)^2 t,-3 (-1+t) t^2,t^3};
+dbasis={-3 (-1+t)^2,3 (-1+t)^2+6 (-1+t) t,-6 (-1+t) t-3 t^2,3 t^2};
+equations=basis.positions;
+10^-7 current NIntegrate[dbasis.positions/Sqrt[(p-equations).(p-equations)],{t,0,1},Method->{Automatic,"SymbolicProcessing"->False}]
 ];
 
 
 (* ::Input::Initialization:: *)
-MagneticInduction[p:{x_,y_,z_}, WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:={0,0,0};
-
-NormalWireSplineMagneticInduction[{x_,y_,z_},end_]:=
-{0,0,0};
+MagneticInduction[p:{x_,y_,z_}, WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:=Block[{basis,dbasis,equations,t},
+basis={-(-1+t)^3,3 (-1+t)^2 t,-3 (-1+t) t^2,t^3};
+dbasis={-3 (-1+t)^2,3 (-1+t)^2+6 (-1+t) t,-6 (-1+t) t-3 t^2,3 t^2};
+equations=basis.positions;
+10^-7 current NIntegrate[Cross[dbasis.positions,(p-equations)]/Sqrt[(p-equations).(p-equations)]^3,{t,0,1},Method->{Automatic,"SymbolicProcessing"->False}]
+];
 
 
 (* ::Input::Initialization:: *)
-MagneticInductionGradient[p:{_,_,_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:={0,0,0};
+MagneticInductionGradient[p:{x_,y_,z_},WireSpline[positions:{{_,_,_},{_,_,_},{_,_,_},{_,_,_}},current_,color_]]:=
+Block[{basis,dbasis,equations,integrand,\[Xi],\[Eta],\[Zeta],t},
+basis={-(-1+t)^3,3 (-1+t)^2 t,-3 (-1+t) t^2,t^3};
+dbasis={-3 (-1+t)^2,3 (-1+t)^2+6 (-1+t) t,-6 (-1+t) t-3 t^2,3 t^2};
+equations=basis.positions;
+integrand=(D[Cross[dbasis.positions,({\[Xi],\[Eta],\[Zeta]}-equations)]/Sqrt[({\[Xi],\[Eta],\[Zeta]}-equations).({\[Xi],\[Eta],\[Zeta]}-equations)]^3,#]&/@{\[Xi],\[Eta],\[Zeta]})/.{\[Xi]->x,\[Eta]->y,\[Zeta]->z};
+10^-7 current NIntegrate[integrand,{t,0,1},Method->{Automatic,"SymbolicProcessing"->False}]
+];
 
-NormalWireSplineMagneticVectorPotential[{x_,y_,z_},end_]:=
-{0,0,0};
+
+(* ::Input::Initialization:: *)
+MagneticVectorPotential[p:{x_,y_,z_},WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}]]:=
+Plus@@(MagneticVectorPotential[p,#]&/@g);
+
+
+(* ::Input::Initialization:: *)
+MagneticInduction[p:{x_,y_,z_},WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}]]:=Plus@@(MagneticInduction[p,#]&/@g);
+
+
+(* ::Input::Initialization:: *)
+MagneticInductionGradient[p:{x_,y_,z_},WireGroup[g:{(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup)..}]]:=
+Plus@@(MagneticInductionGradient[p,#]&/@g);
+
+
+(* ::Input::Initialization:: *)
+MagneticVectorPotential[p:{x_,y_,z_},WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_]]:=
+Plus@@(MagneticVectorPotential[p+offset #,o]&/@Range[0,nRepeat]);
+
+
+(* ::Input::Initialization:: *)
+MagneticInduction[p:{x_,y_,z_},WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_]]:=
+Plus@@(MagneticInduction[p+offset #,o]&/@Range[0,nRepeat]);
+
+
+(* ::Input::Initialization:: *)
+MagneticInductionGradient[p:{x_,y_,z_},WireRepeated[o:(_WireSegment|_WireRectangle|_WireCircle|_WireCircularArc|_WireEllipse|_WireEllipsoidalArc|_WireSpline|_WireRepeated|_WireGroup),offset:{_,_,_},nRepeat_]]:=
+Plus@@(MagneticInductionGradient[p+offset #,o]&/@Range[0,nRepeat]);
+
+
+(* ::Input::Initialization:: *)
+MagneticVectorPotential[p:{_,_,_},MultipoleSegment[VectorPotentialMultipole[cg:{_,_,_},lim1_,lim2_,mp_List],WireSegment[positions:{left:{_,_,_},right:{_,_,_}},current_,color_]]]:=
+Block[{LineSegment,t,s,n,rAbs,\[Phi]},
+
+LineSegment[start:{_,_,_},end:{_,_,_}]:=Block[{v},
+v=end-start;
+rAbs=Sqrt[(p-cg).(p-cg)];
+
+t=RotationMatrix[{v,{0,0,1}}];
+s=RotationMatrix[{-v,{0,0,1}}];
+
+If[rAbs>10^-9,
+\[Phi]=VectorAngle[p-cg,v];
+s.multipoleWireSegmentMagneticVectorPotential[rAbs,\[Phi],mp],
+s.NormalWireSegmentMagneticVectorPotential[t.(p-start),Sqrt[v.v]]
+]
+];
+10^-7 current LineSegment[left,right]
+
+];
+
+multipoleWireSegmentMagneticVectorPotential[r_,\[Phi]_,multipole:{__}]:=
+Block[{n},
+n=Length[multipole];
+{0,0,(((r)^-#)&/@Range[n]).((#[\[Phi]])&/@multipole)}
+];
+
+NormalWireSegmentMagneticVectorPotential[{x_,y_,z_},end_]:=
+{0,0,-ArcSinh[-z/(x^2+y^2)]+ArcSinh[(end-z)/(x^2+y^2)]};
